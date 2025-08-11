@@ -1,4 +1,4 @@
-# seat_occupancy_core.py
+# detect2roi_json.py
 import cv2, json, numpy as np, os, sys
 from ultralytics import YOLO
 
@@ -109,28 +109,26 @@ def is_image(path):
 
 def main():
     if len(sys.argv) < 2:
-        print('사용법. python seat_occupancy_core.py <이미지나 영상 경로 또는 0>')
+        print('사용법. python seat_occupancy_core.py <이미지|영상 경로 또는 0>')
         sys.exit(1)
 
     src = sys.argv[1]
     model = YOLO(MODEL_PATH)
 
-    # 웹캠 모드
+    # 웹캠
     if src == '0':
         cap = cv2.VideoCapture(0)
         if not cap.isOpened():
             print('웹캠을 열 수 없습니다.')
             sys.exit(1)
-        last_state = None
+        fno = 0
         while True:
             ok, frame = cap.read()
             if not ok:
                 break
+            fno += 1
             occ = compute_occupancy(frame, model)
-            state = tuple(sorted([sid for sid, v in occ.items() if v]))
-            if state != last_state:
-                print('점유 좌석 변화.', list(state))
-                last_state = state
+            print(json.dumps({"frame": fno, "seats": occ}, ensure_ascii=False))
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
         cap.release()
@@ -143,14 +141,12 @@ def main():
             print('이미지를 열 수 없습니다.')
             sys.exit(1)
         occ = compute_occupancy(img, model)
-        for sid in sorted(occ.keys(), key=lambda x: int(x) if str(x).isdigit() else str(x)):
-            print(f'Seat {sid}. {"Occupied" if occ[sid] else "Empty"}')
+        print(json.dumps(occ, ensure_ascii=False))
     else:
         cap = cv2.VideoCapture(src)
         if not cap.isOpened():
             print('영상을 열 수 없습니다.')
             sys.exit(1)
-        last_state = None
         fno = 0
         while True:
             ok, frame = cap.read()
@@ -158,10 +154,7 @@ def main():
                 break
             fno += 1
             occ = compute_occupancy(frame, model)
-            state = tuple(sorted([sid for sid, v in occ.items() if v]))
-            if state != last_state:
-                print(f'frame {fno}. occupied {list(state)}')
-                last_state = state
+            print(json.dumps({"frame": fno, "seats": occ}, ensure_ascii=False))
         cap.release()
 
 if __name__ == '__main__':
