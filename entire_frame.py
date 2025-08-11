@@ -1,9 +1,9 @@
-# detect_people.py
+# entire_frame.py
 import cv2
 from ultralytics import YOLO
 
 # 1) 경로 설정 --------------------------------------------------------
-IMG_PATH   = 'subway.jpg'   # 탐지할 원본 사진
+IMG_PATH   = 'subway1.jpg'   # 탐지할 원본 사진
 MODEL_PATH = 'yolov8n-pose.pt'       # 기본 사람 클래스 포함
 
 # 2) 모델 로드 --------------------------------------------------------
