@@ -6,7 +6,7 @@ model = YOLO('yolov8n.pt')   # 또는 'yolov8n.onnx'
 
 # --- 다각형 ROI 불러오기 ---
 rois = {k: np.array(v, np.float32)
-        for k, v in json.load(open('seat_roi1.json')).items()}
+        for k, v in json.load(open('seat_roi.json')).items()}
 
 def poly_iou(poly, box):
     bx1, by1, bx2, by2 = box
@@ -17,7 +17,7 @@ def poly_iou(poly, box):
     area_p = cv2.contourArea(poly); area_b = (bx2-bx1)*(by2-by1)
     return inter / (area_p + area_b - inter + 1e-6)
 
-frame = cv2.imread('cctv_frame.jpg')
+frame = cv2.imread('subway.jpg')
 people = model(frame, classes=[0], verbose=False)[0].boxes.xyxy.cpu().numpy()
 
 for sid, poly in rois.items():
