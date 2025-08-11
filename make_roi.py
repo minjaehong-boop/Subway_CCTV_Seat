@@ -1,8 +1,8 @@
 import cv2, json
 import numpy as np
 
-IMG_PATH = 'subway2.jpg'
-OUT_PATH = 'seat_roi2.json'
+IMG_PATH = 'subway.jpg'
+OUT_PATH = 'seat_roi.json'
 WIN_NAME = 'ROI Calibrator'
 
 img      = cv2.imread(IMG_PATH)
