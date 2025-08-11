@@ -80,7 +80,7 @@ def bbox_iou_xyxy(a, b):
 ### 1) 이미지 파일
 
 ```bash
-python detect2roi_json.py subway.jpg
+python detect2roi_final.py subway.jpg
 ```
 
 출력 예:
@@ -94,7 +94,7 @@ python detect2roi_json.py subway.jpg
 ### 2) 영상 파일
 
 ```bash
-python detect2roi_json.py subway.mp4
+python detect2roi_final.py subway.mp4
 ```
 
 출력 예(**매 프레임마다 한 줄씩**):
@@ -109,7 +109,7 @@ python detect2roi_json.py subway.mp4
 ### 3) 웹캠
 
 ```bash
-python detect2roi_json.py 0
+python detect2roi_final.py 0
 ```
 
 출력 예(**매 프레임마다 한 줄씩**):
@@ -122,24 +122,6 @@ python detect2roi_json.py 0
 
 ---
 
-## 출력 포맷(스키마)
-
-* **이미지**
-
-  ```json
-  { "<seat_id>": <bool>, ... }
-  ```
-
-  예. `{"11": true, "12": false}`
-
-* **영상/웹캠**
-
-  ```json
-  { "frame": <int>, "seats": { "<seat_id>": <bool>, ... } }
-  ```
-
-  예. `{"frame": 125, "seats": {"11": true, "12": false}}`
-
-
 > 앱/서버에서 바로 파싱 가능하도록 표준 JSON을 사용함. 필요 시 키 이름(예: `seats` → `data`) 등은 쉽게 변경 가능.
+> 
 > 주의. 영상/웹캠은 **프레임마다 출력**하므로, 소비 측(앱/서버)에서 필요 시 \*\*변화 감지(이전 상태와 비교)\*\*를 적용해 트래픽을 줄이세요.
