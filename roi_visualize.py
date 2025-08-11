@@ -2,9 +2,9 @@ import cv2, json, numpy as np
 from pathlib import Path
 
 # ---------- 경로 설정 ----------
-IMG_PATH  = 'subway2.jpg'          # 원본 이미지
-JSON_PATH = 'seat_roi2.json'           # 질문에 첨부한 내용 저장
-OUT_PATH  = 'vis_rois2.jpg'            # 시각화 결과
+IMG_PATH  = 'subway.jpg'          # 원본 이미지
+JSON_PATH = 'seat_roi.json'           # 질문에 첨부한 내용 저장
+OUT_PATH  = 'vis_rois1.jpg'            # 시각화 결과
 
 # ---------- 데이터 로드 ----------
 img  = cv2.imread(IMG_PATH)
