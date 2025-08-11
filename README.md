@@ -70,25 +70,71 @@ def bbox_iou_xyxy(a, b):
 * **roi\_visualize.py**: ROI 시각화 및 ID 표시.
 * **roi2detect.py**: ROI 안에서만 사람 탐지 후 점유 여부 출력(초기 방식).
 * **entire\_frame.py**: 전체 프레임에서 사람 탐지 후 바운딩박스 출력.
-* **detect2roi\_final.py**: 전체 프레임 사람 탐지 → 엉덩이 위치 기준 ROI 매칭 → 좌석 점유 여부 출력(최종 방식).
+* **detect2roi\_final.py**: 전체 프레임 사람 탐지 → 엉덩이 위치 기준 ROI 매칭 → 좌석 점유 여부 출력(최종 방식)-좌석 점유 결과를 JSON으로 표준 출력
 
 ---
 
-## 실행 예시
+
+## 실행 예시 (JSON 출력)
+
+### 1) 이미지 파일
 
 ```bash
-# 이미지 파일
 python detect2roi_final.py subway.jpg
+```
 
-# 영상 파일
+출력 예:
+
+```json
+{"1": false, "2": false, "3": true, "4": false, "5": true}
+```
+
+> 키는 좌석 ID, 값은 `true`(Occupied) / `false`(Empty)
+
+### 2) 영상 파일
+
+```bash
 python detect2roi_final.py subway.mp4
+```
 
-# 웹캠
+출력 예(상태 변화가 생긴 프레임에서만 한 줄씩 출력):
+
+```json
+{"frame": 5, "seats": {"1": false, "2": false, "3": true, "4": false, "5": true}}
+{"frame": 18, "seats": {"1": false, "2": true,  "3": true, "4": false, "5": true}}
+```
+
+### 3) 웹캠
+
+```bash
 python detect2roi_final.py 0
 ```
 
+출력 예(상태 변화시에만):
+
+```json
+{"1": false, "2": true, "3": true, "4": false, "5": true}
 ```
-Seat 1. Empty
-Seat 2. Occupied
-...
-```
+
+---
+
+## 출력 포맷(스키마)
+
+* **이미지 / 웹캠**
+
+  ```json
+  { "<seat_id>": <bool>, ... }
+  ```
+
+  예. `{"11": true, "12": false, ...}`
+
+* **영상(파일/스트림)**
+
+  ```json
+  { "frame": <int>, "seats": { "<seat_id>": <bool>, ... } }
+  ```
+
+  예. `{"frame": 125, "seats": {"11": true, "12": false}}`
+
+> 앱/서버에서 바로 파싱 가능하도록 표준 JSON을 사용함. 필요 시 키 이름(예: `seats` → `data`) 등은 쉽게 변경 가능.
+
