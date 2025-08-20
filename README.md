@@ -8,7 +8,11 @@ Seoul_Subway(Line_2)_CCTV_seat_detection
 - 이를 개선하기 위해 `entire_frame.py`에서 전체 프레임에서 먼저 사람을 탐지하는 구조로 변경.
 - `detect2roi_final.py`에서는 바운딩박스 대신 엉덩이(hip) 키포인트 중점이 좌석 바운딩 박스 내부에 포함되는지로 점유 여부를 판단.
 - 결과적으로 겹침·경계 근처에서도 안정적인 좌석 점유 판정이 가능해졌으며, 1:1 매칭과 근접+IoU 보완 로직을 통해 오탐을 줄임.
-
+detect2roi.py---최종 10프레임마다 추론하는 빠른 버전
+detect2roi2.py---영상이랑 같이 확인하는 버전
+make_roi_final.py---영상에서 roi를 만드는 코드
+모든 과정은 test_video2.mp4를 사용하면됨.
+코드 실행 커맨드는 맨 위 주석에 담겨있음
 ---
 
 ## detect2roi_final.py 핵심 코드 블럭 분석
